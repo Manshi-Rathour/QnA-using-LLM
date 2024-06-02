@@ -7,7 +7,6 @@ from langchain.chains import RetrievalQA
 from dotenv import load_dotenv
 import os
 
-# Load environment variables
 load_dotenv()
 api_key = os.getenv('API_KEY')
 if not api_key:
@@ -19,11 +18,6 @@ llm = GoogleGenerativeAI(model="models/text-bison-001", google_api_key=api_key)
 # Initialize HuggingFace Embeddings
 embeddings = HuggingFaceEmbeddings()
 
-# Example text to embed
-text = "This is a test document."
-query_result = embeddings.embed_query(text)
-print(query_result[:3])  # Print first 3 elements of the embedding for brevity
-
 vectordb_file_path = "faiss_index"
 
 
@@ -32,7 +26,7 @@ def create_vector_db():
     loader = CSVLoader(file_path='codebasics_faqs.csv', source_column="prompt")
     data = loader.load()
 
-    # Create a FAISS instance for vector database from 'data'
+    # Creating FAISS instance for vector database from 'data'
     vectordb = FAISS.from_documents(documents=data,
                                     embedding=embeddings)
 
@@ -44,7 +38,7 @@ def get_qa_chain():
     # Load the vector database from the local folder
     vectordb = FAISS.load_local(vectordb_file_path, embeddings, allow_dangerous_deserialization=True)
 
-    # Create a retriever for querying the vector database
+    # Creating retriever for querying the vector database
     retriever = vectordb.as_retriever(score_threshold=0.7)
 
     prompt_template = """Given the following context and a question, generate an answer based on this context only.

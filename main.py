@@ -1,10 +1,7 @@
 import streamlit as st
-from langchainHelper import get_qa_chain, create_vector_db
+from langchainHelper import get_qa_chain
 
 st.title("Codebasics Q&A 🌱")
-btn = st.button("Create Knowledgebase")
-if btn:
-    create_vector_db()
 
 question = st.text_input("Question: ")
 
